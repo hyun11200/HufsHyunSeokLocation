@@ -5,3 +5,5 @@
 1차 코밋: 구글맵사용을 위한 API키 첨부
 
 2차 코밋: 전체 기본파일업로드+ activity_main.xml 파일 fragment태그 수정
+
+3차 코밋: 구글맵활용을위한 MainActivity.java 코드작성
