@@ -31,6 +31,8 @@
 
 그외 코밋들은 README.md 파일 수정으로 인한 코밋입니다.
 
+충돌이 발생한 경우에는 Rebase 와 Merge를 각각 사용해보았습니다.
+
 성공한 실행화면
 
 ![201701096 김현석](https://user-images.githubusercontent.com/49778514/86219789-a0d8d780-bbbd-11ea-87df-13a0cf517b7d.jpg)
