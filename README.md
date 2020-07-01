@@ -29,6 +29,8 @@
 
 4,5차 코밋: 현재위치 표시를위한 GpsTracker 자바파일 작성과 메인액티비티 자바파일 작성.
 
+그외 코밋들은 README.md 파일 수정으로 인한 코밋입니다.
+
 성공한 실행화면
 
 ![201701096 김현석](https://user-images.githubusercontent.com/49778514/86219789-a0d8d780-bbbd-11ea-87df-13a0cf517b7d.jpg)
