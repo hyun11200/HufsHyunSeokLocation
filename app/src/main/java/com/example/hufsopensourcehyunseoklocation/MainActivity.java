@@ -79,14 +79,10 @@ public class MainActivity extends AppCompatActivity
                                            @NonNull int[] grandResults) {
 
         if ( permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
-
-            // 요청 코드가 PERMISSIONS_REQUEST_CODE 이고, 요청한 퍼미션 개수만큼 수신되었다면
+            //permsRequestCode가 퍼미션리퀘스트 코드와 같으면서 grandResults의 길이가 요청된 허가개수와 같으면 돌아가는 if문
 
             boolean check_result = true;
-
-
-            // 모든 퍼미션을 허용했는지 체크합니다.
-
+           //각 허가를 체크함
             for (int result : grandResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
                     check_result = false;
@@ -96,13 +92,11 @@ public class MainActivity extends AppCompatActivity
 
 
             if ( check_result ) {
-
-                //위치 값을 가져올 수 있음
+                //위치를 불러옴
                 ;
             }
             else {
-                // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
-
+                // 거부된 요청의 경우 이유출력과 함께 거절함.
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
                         || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
 
@@ -121,9 +115,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     void checkRunTimePermission(){
-
         //런타임 퍼미션 처리
-        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
+        // 위치 퍼미션이 존재하는지 체크합니다.
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(MainActivity.this,
@@ -132,30 +125,19 @@ public class MainActivity extends AppCompatActivity
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
                 hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
+            // 퍼미션이 존재한다면 위치값을 가져옵니다.
 
-            // 2. 이미 퍼미션을 가지고 있다면
-            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
-
-
-            // 3.  위치 값을 가져올 수 있음
-
-
-
-        } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
-
-            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
+        } else {
+            //퍼미션이 없을경우 퍼미션을 요청합니다.
+            //퍼미션이 거절된적이 있을경우
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, REQUIRED_PERMISSIONS[0])) {
-
-                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
+                // 사용자에게 퍼미션필요 이유를 설명함
                 Toast.makeText(MainActivity.this, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.", Toast.LENGTH_LONG).show();
-                // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                // 퍼미션 요청창을 띄움
                 ActivityCompat.requestPermissions(MainActivity.this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
-
-
             } else {
-                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
-                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                // 사용자에게 요청을 거부당한적이 없을경우 바로 요청실시
                 ActivityCompat.requestPermissions(MainActivity.this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
@@ -166,12 +148,10 @@ public class MainActivity extends AppCompatActivity
 
 
     public String getCurrentAddress( double latitude, double longitude) {
-
-        //지오코더... GPS를 주소로 변환
+        //GPS 를 주소로 변환하는 Geocoder
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         List<Address> addresses;
-
         try {
 
             addresses = geocoder.getFromLocation(
@@ -179,7 +159,7 @@ public class MainActivity extends AppCompatActivity
                     longitude,
                     7);
         } catch (IOException ioException) {
-            //네트워크 문제
+            //서비스 실패시 익셉션 시행
             Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
             return "지오코더 서비스 사용불가";
         } catch (IllegalArgumentException illegalArgumentException) {
@@ -187,9 +167,6 @@ public class MainActivity extends AppCompatActivity
             return "잘못된 GPS 좌표";
 
         }
-
-
-
         if (addresses == null || addresses.size() == 0) {
             Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
             return "주소 미발견";
@@ -200,9 +177,7 @@ public class MainActivity extends AppCompatActivity
         return address.getAddressLine(0).toString()+"\n";
 
     }
-
-
-    //여기부터는 GPS 활성화를 위한 메소드들
+    //GPS를 위한 메소드들
     private void showDialogForLocationServiceSetting() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -226,8 +201,6 @@ public class MainActivity extends AppCompatActivity
         });
         builder.create().show();
     }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -235,8 +208,7 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode) {
 
             case GPS_ENABLE_REQUEST_CODE:
-
-                //사용자가 GPS 활성 시켰는지 검사
+                // GPS 실행여부에대해 확인
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
 
